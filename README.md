@@ -1,7 +1,5 @@
 # ArduinoBTCar
 
-Obstacle Avoiding Smart Car with Arduino that can be controlled using Voice
+Obstacle Avoiding Smart Car with Arduino 
 
-Code to upload to Arduino is given
-
-Can control with Voice using BT Voice Control for Arduino App on PlayStore
+Can control with Voice using BT Voice Control for Arduino App on PlayStore, if BT Code is incorporated into existing code
