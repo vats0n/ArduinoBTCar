@@ -1,6 +1,5 @@
 
 #include <Servo.h>  
-// defines pins numbers
 const int trigPin = 9;
 const int echoPin = 8;
 const int lm1=7;
@@ -8,9 +7,9 @@ const int lm2=6;
 const int rm1=5;
 const int rm2=4;
 const int servoPin=10;
-
+SoftwareSerial BT(0, 1);
+String readvoice;
 Servo myservo;
-
 long duration;
 int distance;
 int distance_f;
@@ -19,20 +18,63 @@ int distance_l;
 int maxLowDistance=70;
 
 void setup() {
+BT.begin(9600);
 pinMode(trigPin, OUTPUT); 
 pinMode(echoPin, INPUT); 
-
 pinMode(lm1,OUTPUT);
 pinMode(lm2,OUTPUT);
 pinMode(rm1,OUTPUT);
 pinMode(rm2,OUTPUT);
-
 myservo.attach(servoPin);
 myservo.write(90);
-
 Serial.begin(9600); 
 }
 void loop() {
+
+
+  while (BT.available()){  
+  delay(10); 
+  char c = BT.read(); 
+  readvoice += c; 
+  } 
+  if (readvoice.length() > 0) {
+  
+  Serial.println(readvoice);
+
+  if(readvoice == "*forward#")
+  {
+ front();
+    delay(100);
+  }
+
+  else if(readvoice == "*back#")
+  {
+back();
+    delay(100);
+  }
+
+  else if (readvoice == "*left#")
+  {
+   left();
+    delay(100);
+  
+  }
+
+ else if ( readvoice == "*right#")
+ {
+   right();
+    delay(100);
+ }
+
+ else if (readvoice == "*stop#")
+ {
+  brake();
+   delay (1000);
+ }
+  readvoice="";
+  }
+  
+
    distance_f=ping();
    if(distance_f > maxLowDistance){
      front();
@@ -95,7 +137,7 @@ void right(){
   digitalWrite(rm1,HIGH);
   digitalWrite(rm2,LOW);
 }
-void Break(){
+void Brake(){
   digitalWrite(lm2,LOW);
   digitalWrite(lm1,LOW);
   digitalWrite(rm1,LOW);
